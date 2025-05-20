@@ -4,9 +4,12 @@ import os
 from langchain.agents import AgentExecutor, create_structured_chat_agent
 from langchain.memory import ConversationBufferMemory
 from langchain_core.tools import tool
+
 from langchain_google_genai import ChatGoogleGenerativeAI
+
 from langchain_community.tools.tavily_search import TavilySearchResults
-from langchain import hub
+import math
+
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_core.messages import AIMessage, HumanMessage, SystemMessage
 
@@ -39,7 +42,21 @@ def search_wikipedia(query: str) -> str:
         return f"Error fetching Wikipedia summary: {str(e)}"
 
 
-tools = [get_tavily, search_wikipedia]
+
+@tool
+def math_tool(expression: str) -> str:
+    """
+    Evaluates a mathematical expression and returns the result.
+    Example: '2 * (3 + 5)'
+    """
+    try:
+        result = eval(expression, {"__builtins__": None, "math": math})
+        return f"The result is {result}"
+    except Exception as e:
+        return f"Error evaluating expression: {e}"
+
+
+tools = [get_tavily, search_wikipedia, math_tool]
 
 prompt_template = ChatPromptTemplate.from_messages([
     (
