@@ -30,12 +30,11 @@ MANIFEST
 .DS_Store
 .idea/
 
-main_file.py
-
 # Ignore Pipenv files (if you're using requirements.txt instead)
 Pipfile
 Pipfile.lock
 
+app.py
 
 # PyInstaller
 #  Usually these files are written by a python script from a template
